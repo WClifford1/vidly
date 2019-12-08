@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require("joi");
 
-
+// Mongoose schema for customers collection
 const Customer = mongoose.model('Customer', new mongoose.Schema({
     name: {
         type: String,
@@ -21,7 +21,7 @@ const Customer = mongoose.model('Customer', new mongoose.Schema({
     }
 }));
 
-
+// Use Joi to validate user input
 function validateCustomer(customer) {
     const schema = {
         name: Joi.string().min(5).max(50).required(),

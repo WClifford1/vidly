@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Joi = require("joi");
 
-
+// Rental schema for MongoDB rentals collection
 const Rental = mongoose.model('Rental', new mongoose.Schema({
     customer: {
         type: new mongoose.Schema({
@@ -55,7 +55,7 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
     }
 }));
 
-
+// Use Joi to validate user input
 function validateRental(rental) {
     const schema = {
         customerId: Joi.objectId().required(),

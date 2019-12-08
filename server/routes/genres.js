@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const { Genre, validateGenre } = require('../models/genre')
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
-
-router.get("/", async (req, res) => {
+// Get all genres
+router.get("/", async (req, res, next) => {
     try {
         const genres = await Genre
             .find()
@@ -11,26 +13,24 @@ router.get("/", async (req, res) => {
         console.log(genres);
         res.send(genres);
     } catch (e) {
-        for (field in e.errors);
-        console.error("ERROR ERROR: ", e.errors[field]);
-        res.send("ERROR ERROR: ", e.errors[field]);
+        next(e);
     };
 });
 
-
+// Get single genre by id
 router.get("/:id", async (req, res) => {
     try {
         const genre = await Genre.findById(req.params.id);
         console.log(genre);
         res.send(genre);
     } catch (e) {
-        console.log(e.message)
         res.send(e.message)
     };
 });
 
+// Post new genre
+router.post("/", auth, async (req, res) => {
 
-router.post("/", async (req, res) => {
     const { error } = validateGenre(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     
@@ -49,8 +49,8 @@ router.post("/", async (req, res) => {
     };
 });
 
-
-router.put("/:id", async (req, res) => {
+// Edit genre by id
+router.put("/:id", auth, async (req, res) => {
     const { error } = validateGenre(req.body)
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -66,8 +66,8 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-
-router.delete("/:id", async (req, res) => {
+// Remove genre by id
+router.delete("/:id", [auth, admin], async (req, res) => {
     try {
         const genre = await Genre.findByIdAndRemove(req.params.id);
         console.log(genre);

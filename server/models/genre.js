@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const mongoose = require('mongoose');
 
+// Genre schema for MongoDB genres collection
 const genreSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -12,7 +13,7 @@ const genreSchema = new mongoose.Schema({
 
 const Genre = mongoose.model('Genre', genreSchema)
 
-
+// Use Joi to validate user input
 function validateGenre(genre) {
     const schema = {
         name: Joi.string().min(3).required()

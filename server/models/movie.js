@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const { genreSchema } = require('./genre');
 const Joi = require("joi");
 
-
+// Movie schema for MongoDB movies collection
+// genre field uses embedded genreSchema
 const Movie = mongoose.model('Movie', new mongoose.Schema({
     title: {
         type: String,
@@ -31,7 +32,7 @@ const Movie = mongoose.model('Movie', new mongoose.Schema({
     }
 }));
 
-
+// Use Joi to validate user input
 function validateMovie(movie) {
     const schema = {
         title: Joi.string().min(1).max(50).required(),
